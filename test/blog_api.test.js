@@ -120,12 +120,15 @@ test('test for deleting blog post', async () => {
 })
 
 test('Unauthorized token requets', async () => {
+	/*
 	const dummyBlog = {
 		title: 'Bed',
 		author: 'Pillow Jackson',
 		url: 'http://www.blanket.eu',
 		likes: 10293458
 	}
+  */
+
 	await api.post('/api/blogs/')
 		.set('Authorization', 'Bearer wakamakafo')
 		.expect(401)

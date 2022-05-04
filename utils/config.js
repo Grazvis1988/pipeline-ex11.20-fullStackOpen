@@ -1,6 +1,6 @@
 require('dotenv').config()
 
-const PORT = process.env.REACT_APP_PORT
+const PORT = process.env.REACT_APP_PORT || 5000
 
 const MONGODB_URI = process.env.NODE_ENV === 'test'
 	? process.env.REACT_APP_MONGODB_URI_TEST
