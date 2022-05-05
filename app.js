@@ -22,6 +22,7 @@ mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology
 	})
 
 app.use(express.static(path.join(__dirname, 'build')))
+app.use(express.static("public"))
 
 app.use(cors())
 app.use(express.json())
@@ -37,7 +38,7 @@ if(process.env.NODE_ENV === 'test') {
 	app.use('/api/testing', testRouter)
 }
 
-app.get('/', function (req, res) {
+app.use((req, res) => {
 	res.sendFile(path.join(__dirname, 'build', 'index.html'))
 })
 
