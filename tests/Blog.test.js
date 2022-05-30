@@ -1,6 +1,10 @@
+/**
+ * @jest-environment jsdom
+ */
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { render, fireEvent } from '@testing-library/react'
+import '@testing-library/jest-dom'
 import Blog from '../src/components/Blog.js'
 import CreationForm from '../src/components/CreationForm.js'
 
@@ -25,12 +29,12 @@ describe('Blog tests', () => {
 
 	test('Render blog title and author, but not likes and url', () => {
 
-		const component = render(
-			<Blog blog={blog} />
+		const { container } = render(
+			<Blog blog={blog} user={{ name: 'Alfonsas' }} removal={ () => {} } like={() => {} }/>
 		)
 
 
-		const div = component.container.querySelector('.BlogDiv')
+		const div = container.querySelector('.BlogDiv')
 
 		expect(div).toHaveTextContent(
 			'Dankanas Maklaudas'

@@ -1,13 +1,13 @@
 describe('Blog app', function() {
 	beforeEach(function() {
-		cy.request('POST', 'http://localhost:3000/api/testing/reset')
-		cy.request('POST', 'http://localhost:3000/api/users', {
+		cy.request('POST', 'http://localhost:5000/api/testing/reset')
+		cy.request('POST', 'http://localhost:5000/api/users', {
 			username: 'ziogas',
 			name: 'Antanas',
-			password: '1234'
+			password: '1111'
 		})
 
-		cy.visit('http://localhost:3000')
+		cy.visit('http://localhost:5000')
 	})
 
 	it('Login form is shown', function() {
@@ -18,9 +18,9 @@ describe('Blog app', function() {
 		it('succeeds with correct credentials', function() {
 			cy.contains('log in').click()
 			cy.get('#username').type('ziogas')
-			cy.get('#password').type('1234')
+			cy.get('#password').type('1111')
 			cy.contains('login').click()
-			cy.contains('Antanas loged in')
+			cy.contains('Antanas loged in', { timeout: 4500 })
 		})
 
 		it('fails with wrong credentials', function() {
@@ -28,19 +28,19 @@ describe('Blog app', function() {
 			cy.get('#username').type('Van Damme')
 			cy.get('#password').type('91458')
 			cy.contains('login').click()
-			cy.contains('Wrong username or password')
+			cy.contains('Wrong username or password', { timeout: 4500 })
 			cy.get('.error').should('have.css', 'color', 'rgb(255, 0, 0)')
 		})
 	})
 
 	describe('When loged in', function() {
 		beforeEach(function() {
-			cy.request('POST', 'http://localhost:3000/api/login', {
+			cy.request('POST', 'http://localhost:5000/api/login', {
 				username: 'ziogas',
-				password: '1234'
+				password: '1111'
 			}).then( response => {
 				localStorage.setItem('LoggedBlogUser', JSON.stringify(response.body))
-				cy.visit('http://localhost:3000')
+				cy.visit('http://localhost:5000')
 			})
 		})
 
@@ -56,7 +56,7 @@ describe('Blog app', function() {
 			beforeEach(function() {
 				cy.request({
 					method: 'POST',
-					url: 'http://localhost:3000/api/blogs',
+					url: 'http://localhost:5000/api/blogs',
 					body: {
 						title: 'Gliders dream',
 						author: 'Jurgis Kairys',
@@ -67,7 +67,7 @@ describe('Blog app', function() {
 						bearer: JSON.parse(localStorage.LoggedBlogUser).token
 					}
 				})
-				cy.visit('http://localhost:3000')
+				cy.visit('http://localhost:5000')
 			})
 
 			it('User can like the blog', function() {
@@ -86,7 +86,7 @@ describe('Blog app', function() {
 
 			it('Other Users can not delete the blog', function() {
 				cy.get('button[name=logout]').click()
-				cy.request('POST', 'http://localhost:3000/api/users', {
+				cy.request('POST', 'http://localhost:5000/api/users', {
 					username: 'dagilis',
 					name: 'Algis',
 					password: '2345'
@@ -105,7 +105,7 @@ describe('Blog app', function() {
 			beforeEach(function() {
 				cy.request({
 					method: 'POST',
-					url: 'http://localhost:3000/api/blogs',
+					url: 'http://localhost:5000/api/blogs',
 					body: {
 						title: 'title1',
 						author: 'user1',
@@ -118,7 +118,7 @@ describe('Blog app', function() {
 				})
 				cy.request({
 					method: 'POST',
-					url: 'http://localhost:3000/api/blogs',
+					url: 'http://localhost:5000/api/blogs',
 					body: {
 						title: 'title2',
 						author: 'user2',
@@ -131,7 +131,7 @@ describe('Blog app', function() {
 				})
 				cy.request({
 					method: 'POST',
-					url: 'http://localhost:3000/api/blogs',
+					url: 'http://localhost:5000/api/blogs',
 					body: {
 						title: 'title3',
 						author: 'user3',
@@ -142,7 +142,7 @@ describe('Blog app', function() {
 						bearer: JSON.parse(localStorage.LoggedBlogUser).token
 					}
 				})
-				cy.visit('http://localhost:3000')
+				cy.visit('http://localhost:5000')
 			})
 
 			it('Check if the order of blogs by likes is descending', function() {

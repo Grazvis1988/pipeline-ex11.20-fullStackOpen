@@ -5,17 +5,6 @@ import React, { useState } from 'react'
 const Blog = ({ blog, user, removal, like }) => {
 	const [viewState, setViewState] = useState(true)
 	const [likes, setLikes] = useState(blog.likes)
-	//const [likes, setLikes] = useState(blog.likes)
-	//    const handleLikes = async (blog) => {
-	//       const newblog =	await blogService.update(blog.id, {
-	//          user: blog.user.id,
-	//         likes: likes + 1,
-	//        author: blog.author,
-	//       title: blog.title,
-	//      url: blog.url
-	// }).catch(err => { console.error(err) })
-	//  setLikes(newblog.likes)
-	//   }
 	const handleDeletion = (id) => {
 		if (user.name === blog.user.name) {
 			return (

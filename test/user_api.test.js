@@ -1,18 +1,30 @@
 const mongoose = require('mongoose')
 const app = require('../app')
+const bcrypt = require('bcrypt')
 const supertest = require('supertest')
 const api = supertest(app)
 const User = require('../models/users')
+const Blog = require('../models/blogs')
 const helper = require('./test_helper')
 
 beforeEach( async () => {
+	await Blog.deleteMany({})
 	await User.deleteMany({})
+
 	const userInput_1 = new User({
-		userName: 'Agneta',
+		username: 'Agneta',
 		name: 'Agne',
-		passwordHash: '$2b$10$IXe3HZ5ovnhZRbalG4WN0eWUBXpp6JrteB1ZI8yBjm5XW/VGeTghu'
+		passwordHash: await bcrypt.hash('1234', 12)
 	})
+	userInput_1.blogs = helper.blogList.map( b => userInput_1.blogs.concat(b._id) )
 	await userInput_1.save()
+
+	const userInDb = await User.findOne({ username: 'Agneta' })
+
+	const userInJson = userInDb.toJSON()
+	const blogObjects = helper.blogList.map( b => (b.user = userInJson.id) && new Blog(b) )
+	const promiseArray = blogObjects.map( b => b.save() )
+	await Promise.all(promiseArray)
 
 })
 
@@ -44,7 +56,7 @@ describe('User validation', () => {
 
 	test('New user is actualy added', async () => {
 		const user = {
-			userName: 'Kartoplia',
+			username: 'Kartoplia',
 			name: 'Anatolijus',
 			password: '123'
 		}
@@ -56,7 +68,7 @@ describe('User validation', () => {
 
 		const afterEnd = await helper.usersInDb()
 		expect(afterEnd.length).toBe(2)
-		expect(afterEnd[1].userName).toEqual('Kartoplia')
+		expect(afterEnd[1].username).toEqual('Kartoplia')
 	})
 
 })

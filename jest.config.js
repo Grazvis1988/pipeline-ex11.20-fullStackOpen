@@ -1,3 +1,6 @@
 module.exports = {
-	testEnvironment: 'node'
+	testEnvironment: 'node',
+	testPathIgnorePatterns : [
+		'./controlers/test.js'
+	]
 }
