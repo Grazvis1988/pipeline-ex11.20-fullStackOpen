@@ -57,7 +57,7 @@ jobs:
           text: Build failed 
           avatarUrl: https://github.com/Grazvis1988.png
           description: Commit
-          details: https://github.com/Grazvis1988/full-stack-open-pokedex/commit/${{ github.sha }} by Grazvis1988 broke the build
+          details: https://github.com/Grazvis1988/pipeline-ex11.20-fullStackOpen/commit/${{ github.sha }} by Grazvis1988 broke the build
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       - name: Build succeeded
         uses: rjstone/discord-webhook-notify@v1
